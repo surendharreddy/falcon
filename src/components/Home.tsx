@@ -3,13 +3,15 @@ import { SafeAreaView, StyleSheet, View, Text } from 'react-native';
 
 const Home = () => {
   return (
-    <>
+    <View>
       <SafeAreaView>
         <View style={styles.sectionContainer}>
-          <Text style={styles.sectionTitle}>Falcon Home Screen</Text>
+          <Text style={styles.sectionTitle} testID={'home-message'}>
+            Falcon Home Screen
+          </Text>
         </View>
       </SafeAreaView>
-    </>
+    </View>
   );
 };
 

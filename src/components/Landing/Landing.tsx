@@ -9,13 +9,22 @@ import {
 
 import { LandingProps } from './types';
 
-const Landing: React.SFC<LandingProps> = ({ navigation }) => {
+const Landing: React.SFC<LandingProps> = ({ base, navigation }) => {
   return (
     <>
       <SafeAreaView>
         <View style={styles.sectionContainer}>
           <Text style={styles.sectionTitle}>Falcon Landing Screen</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+          <Text style={styles.sectionTitle}>
+            appOpenTime:
+            <Text style={styles.sectionTitle} testID={'app-open-time'}>
+              {base?.appOpenTime}
+            </Text>{' '}
+            {base?.appOpenTime}
+          </Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Home')}
+            testID={'go-to-home'}>
             <Text style={styles.textLink}>Go To Home</Text>
           </TouchableOpacity>
         </View>

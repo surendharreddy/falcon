@@ -1,14 +1,10 @@
-/**
- * @format
- */
-
-import 'react-native';
 import React from 'react';
-import Home from '../Home';
+import { render } from '@testing-library/react-native';
 
-// Note: test renderer must be required after react-native.
-import renderer from 'react-test-renderer';
+import Home from '../components/Home';
 
-it('renders correctly', () => {
-  renderer.create(<Home />);
+test('render Home', () => {
+  const { getByTestId } = render(<Home />);
+  const text = getByTestId('home-message');
+  expect(text.props.children).toBe('Falcon Home Screen');
 });

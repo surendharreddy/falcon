@@ -1,22 +1,51 @@
-/**
- * @format
- */
+import React, { ReactNode } from 'react';
+import { AnyAction, Action, createStore, Store } from 'redux';
+import { Provider } from 'react-redux';
+import { render, RenderResult } from '@testing-library/react-native';
 
-import 'react-native';
-import React from 'react';
-import Landing from '../Landing';
+import Landing from '../components/Landing';
+import reducers from '../redux/reducers';
 
-// Note: test renderer must be required after react-native.
-import renderer from 'react-test-renderer';
-
-const createNavigationProps = (props: any) => ({
+const createTestProps = (props: any) => ({
   navigation: {
     navigate: jest.fn(),
   },
   ...props,
 });
 
-it('renders Landing correctly', () => {
-  const props = createNavigationProps({});
-  renderer.create(<Landing {...props} />);
+interface RenderWithRedux<
+  S = any,
+  A extends Action = AnyAction,
+  I extends S = any
+> {
+  (
+    ui: ReactNode,
+    reduxOptions: {
+      store?: Store<S, A>;
+      initialState?: I;
+    },
+  ): RenderResult & {
+    store: Store<S, A>;
+  };
+}
+
+const renderWithRedux: RenderWithRedux = (
+  ui,
+  { initialState, store = createStore(reducers, initialState) } = {},
+) => {
+  return {
+    ...render(<Provider store={store}>{ui}</Provider>),
+    store,
+  };
+};
+
+test('render Landing with redux', () => {
+  const props = createTestProps({});
+  const initialState = { base: { appOpenTime: 123456 } };
+  const { getByTestId } = renderWithRedux(<Landing {...props} />, {
+    initialState,
+  });
+  expect(getByTestId('app-open-time').props.children).toBe(
+    initialState?.base?.appOpenTime,
+  );
 });
